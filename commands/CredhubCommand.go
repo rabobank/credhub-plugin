@@ -7,6 +7,7 @@ import (
 
 	"code.cloudfoundry.org/cli/cf/errors"
 	"github.com/rabobank/credhub-plugin/conf"
+	"github.com/rabobank/credhub-plugin/util"
 )
 
 type CredhubCommand struct {
@@ -94,4 +95,27 @@ func parseDeleteParameters(args []string) (interface{}, error) {
 	}
 
 	return args, nil
+}
+
+func ListSecrets(brokerUrl, serviceGuid, token string) error {
+	keys := make([]string, 0)
+	if e := util.Request(brokerUrl, "api", serviceGuid, "keys").WithAuthorization(token).GetJson(&keys); e != nil {
+		return e
+	}
+
+	fmt.Println()
+	for _, key := range keys {
+		fmt.Println(key)
+	}
+	fmt.Println()
+
+	return nil
+}
+
+func AddSecrets(brokerUrl, serviceGuid, token string, payload interface{}) error {
+	return nil
+}
+
+func DeleteSecrets(brokerUrl, serviceGuid, token string, payload interface{}) error {
+	return nil
 }
