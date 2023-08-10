@@ -171,6 +171,21 @@ func (r *HttpRequest) DeleteContent(content []byte) ([]byte, error) {
 	return r.Do(http.MethodDelete)
 }
 
+func (r *HttpRequest) DeleteReturningJson(o interface{}) error {
+	r.Accepting("application/json")
+
+	body, e := r.Delete()
+	if e != nil {
+		return e
+	}
+
+	if e = json.Unmarshal(body, o); e != nil {
+		return e
+	}
+
+	return nil
+}
+
 func (r *HttpRequest) transport() *tls.Config {
 	if r.tlsOptions == nil {
 		r.tlsOptions = &tls.Config{}

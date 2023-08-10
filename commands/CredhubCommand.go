@@ -10,6 +10,10 @@ import (
 	"github.com/rabobank/credhub-plugin/util"
 )
 
+type DeleteResponse struct {
+	IgnoredKeys []string
+}
+
 type CredhubCommand struct {
 	Command     int
 	ServiceName string
@@ -122,5 +126,21 @@ func AddSecrets(brokerUrl, serviceGuid, token string, payload interface{}) error
 }
 
 func DeleteSecrets(brokerUrl, serviceGuid, token string, payload interface{}) error {
+	content, e := json.Marshal(payload)
+	if e != nil {
+		return e
+	}
+	response := DeleteResponse{}
+	if e = util.Request(brokerUrl, "api", serviceGuid, "keys").WithAuthorization(token).Sending("application/json").WithContent(content).DeleteReturningJson(&response); e != nil {
+		return e
+	}
+
+	if response.IgnoredKeys != nil {
+		fmt.Println("Ignored keys (not existing):")
+		for _, key := range response.IgnoredKeys {
+			fmt.Println("  ", key)
+		}
+		fmt.Println()
+	}
 	return nil
 }
