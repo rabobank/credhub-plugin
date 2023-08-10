@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"code.cloudfoundry.org/cli/plugin"
+	"github.com/rabobank/credhub-plugin/commands"
 	"github.com/rabobank/credhub-plugin/conf"
 )
 
@@ -14,6 +15,13 @@ func (c *CredhubPlugin) Run(cliConnection plugin.CliConnection, args []string) {
 	if args[0] == "CLI-MESSAGE-UNINSTALL" {
 		return
 	}
+
+	_, e := commands.ParseCommand(args)
+	if e != nil {
+		fmt.Println(e)
+		os.Exit(1)
+	}
+
 }
 
 func (c *CredhubPlugin) GetMetadata() plugin.PluginMetadata {
@@ -25,8 +33,8 @@ func (c *CredhubPlugin) GetMetadata() plugin.PluginMetadata {
 			Build: 0,
 		},
 		MinCliVersion: plugin.VersionType{
-			Major: 8,
-			Minor: 0,
+			Major: 7,
+			Minor: 1,
 			Build: 0,
 		},
 		Commands: conf.COMMANDS,
