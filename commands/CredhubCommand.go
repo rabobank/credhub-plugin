@@ -83,8 +83,6 @@ func parseAddParameters(args []string) (interface{}, error) {
 		}
 	}
 
-	fmt.Println(secrets)
-
 	return secrets, nil
 }
 
@@ -113,6 +111,13 @@ func ListSecrets(brokerUrl, serviceGuid, token string) error {
 }
 
 func AddSecrets(brokerUrl, serviceGuid, token string, payload interface{}) error {
+	content, e := json.Marshal(payload)
+	if e != nil {
+		return e
+	}
+	if _, e = util.Request(brokerUrl, "api", serviceGuid, "keys").WithAuthorization(token).Sending("application/json").WithContent(content).Put(); e != nil {
+		return e
+	}
 	return nil
 }
 

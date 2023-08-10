@@ -153,13 +153,13 @@ func (r *HttpRequest) GetJson(o interface{}) error {
 	return nil
 }
 
-func (r *HttpRequest) Post() ([]byte, error) {
-	return r.Do(http.MethodPost)
+func (r *HttpRequest) Put() ([]byte, error) {
+	return r.Do(http.MethodPut)
 }
 
 func (r *HttpRequest) PostContent(content []byte) ([]byte, error) {
 	r.content = bytes.NewReader(content)
-	return r.Do(http.MethodPost)
+	return r.Do(http.MethodPut)
 }
 
 func (r *HttpRequest) Delete() ([]byte, error) {
