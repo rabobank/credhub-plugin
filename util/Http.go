@@ -5,7 +5,6 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"net/http"
 
 	"code.cloudfoundry.org/cli/cf/errors"
@@ -122,13 +121,13 @@ func (r *HttpRequest) Do(method string) ([]byte, error) {
 	if e != nil {
 		return nil, e
 	}
-	defer response.Body.Close()
+	defer func() { _ = response.Body.Close() }()
 
 	if response.StatusCode < http.StatusOK || response.StatusCode >= http.StatusBadRequest {
 		return nil, errors.New("failed request")
 	}
 
-	body, e := ioutil.ReadAll(response.Body)
+	body, e := io.ReadAll(response.Body)
 	if e != nil {
 		return nil, e
 	}
