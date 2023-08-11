@@ -19,8 +19,8 @@ var COMMANDS = []plugin.Command{
 		HelpText: "Add secrets to credhub service",
 		UsageDetails: plugin.Usage{
 			Usage: "\n" +
-				"cf add-credhub-keys <SERVICE_INSTANCE> <JSON_OBJECT>\n" +
-				"cf add-credhub-keys <SERVICE_INSTANCE> <KEY> <VALUE>\n" +
+				"cf add-credhub-secrets <SERVICE_INSTANCE> <JSON_OBJECT>\n" +
+				"cf add-credhub-secrets <SERVICE_INSTANCE> <KEY> <VALUE>\n" +
 				"\n" +
 				"  SERVICE_INSTANCE - Credhub service instance name the keys are being added to.\n" +
 				"\n" +
@@ -69,10 +69,10 @@ var COMMANDS = []plugin.Command{
 	{
 		Name:     "reinstate-credhub-secrets-version",
 		Alias:    "rcv",
-		HelpText: "List all secret keys in the credhub service instance",
+		HelpText: "Reinstate a previous version of the credhub service instance credentials",
 		UsageDetails: plugin.Usage{
 			Usage: "\n" +
-				"cf list-credhub-secrets <SERVICE_INSTANCE> <VERSION_ID>\n" +
+				"cf reinstate-credhub-secrets <SERVICE_INSTANCE> <VERSION_ID>\n" +
 				"\n" +
 				"  SERVICE_INSTANCE - Credhub service instance name.\n" +
 				"  VERSION_ID       - The credentials version id to reinstate. Can be obtained from the list-credhub-secrets-versions command.\n",
