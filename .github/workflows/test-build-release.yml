@@ -45,7 +45,7 @@ jobs:
       - name: Determine Version
         id: determine_version
         run: |
-          echo VERSION=v1.0.0 >> ${GITHUB_ENV}
+          echo VERSION=$(~/go/bin/versioning bump_patch) >> ${GITHUB_ENV}
       - name: Download Artifacts
         uses: actions/download-artifact@v3
         with:
