@@ -72,7 +72,7 @@ var COMMANDS = []plugin.Command{
 		HelpText: "Reinstate a previous version of the credhub service instance credentials",
 		UsageDetails: plugin.Usage{
 			Usage: "\n" +
-				"cf reinstate-credhub-secrets <SERVICE_INSTANCE> <VERSION_ID>\n" +
+				"cf reinstate-credhub-secrets-version <SERVICE_INSTANCE> <VERSION_ID>\n" +
 				"\n" +
 				"  SERVICE_INSTANCE - Credhub service instance name.\n" +
 				"  VERSION_ID       - The credentials version id to reinstate. Can be obtained from the list-credhub-secrets-versions command.\n",
