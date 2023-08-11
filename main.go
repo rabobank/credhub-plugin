@@ -55,6 +55,10 @@ func (c *CredhubPlugin) Run(cliConnection plugin.CliConnection, args []string) {
 		e = commands.AddSecrets(brokerUrl, service.Guid, token, command.Payload)
 	case conf.DEL_SECRET:
 		e = commands.DeleteSecrets(brokerUrl, service.Guid, token, command.Payload)
+	case conf.LIST_VERSIONS:
+		e = commands.ListVersions(brokerUrl, service.Guid, token)
+	case conf.REINSTATE_VERSION:
+		e = commands.ReinstateVersion(brokerUrl, service.Guid, token, command.Payload)
 	}
 
 	if e != nil {

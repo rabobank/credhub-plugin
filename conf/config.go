@@ -8,6 +8,8 @@ const (
 	ADD_SECRET = iota
 	DEL_SECRET
 	LIST_SECRETS
+	LIST_VERSIONS
+	REINSTATE_VERSION
 )
 
 var COMMANDS = []plugin.Command{
@@ -51,6 +53,29 @@ var COMMANDS = []plugin.Command{
 				"cf list-credhub-secrets <SERVICE_INSTANCE>\n" +
 				"\n" +
 				"  SERVICE_INSTANCE - Credhub service instance name.\n",
+		},
+	},
+	{
+		Name:     "list-credhub-secrets-versions",
+		Alias:    "lcv",
+		HelpText: "List up to 20 latest versions for a credhub service instance credentials",
+		UsageDetails: plugin.Usage{
+			Usage: "\n" +
+				"cf list-credhub-secrets-versions <SERVICE_INSTANCE>\n" +
+				"\n" +
+				"  SERVICE_INSTANCE - Credhub service instance name.\n",
+		},
+	},
+	{
+		Name:     "reinstate-credhub-secrets-version",
+		Alias:    "rcv",
+		HelpText: "List all secret keys in the credhub service instance",
+		UsageDetails: plugin.Usage{
+			Usage: "\n" +
+				"cf list-credhub-secrets <SERVICE_INSTANCE> <VERSION_ID>\n" +
+				"\n" +
+				"  SERVICE_INSTANCE - Credhub service instance name.\n" +
+				"  VERSION_ID       - The credentials version id to reinstate. Can be obtained from the list-credhub-secrets-versions command.\n",
 		},
 	},
 }

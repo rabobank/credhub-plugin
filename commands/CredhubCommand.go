@@ -8,6 +8,7 @@ import (
 	"code.cloudfoundry.org/cli/cf/errors"
 	"github.com/rabobank/credhub-plugin/conf"
 	"github.com/rabobank/credhub-plugin/util"
+	"github.com/rabobank/credhub-service-broker/model"
 )
 
 type DeleteResponse struct {
@@ -21,9 +22,11 @@ type CredhubCommand struct {
 }
 
 var commandMapping = map[string]int{
-	conf.COMMANDS[conf.ADD_SECRET].Name:   conf.ADD_SECRET,
-	conf.COMMANDS[conf.DEL_SECRET].Name:   conf.DEL_SECRET,
-	conf.COMMANDS[conf.LIST_SECRETS].Name: conf.LIST_SECRETS,
+	conf.COMMANDS[conf.ADD_SECRET].Name:        conf.ADD_SECRET,
+	conf.COMMANDS[conf.DEL_SECRET].Name:        conf.DEL_SECRET,
+	conf.COMMANDS[conf.LIST_SECRETS].Name:      conf.LIST_SECRETS,
+	conf.COMMANDS[conf.LIST_VERSIONS].Name:     conf.LIST_VERSIONS,
+	conf.COMMANDS[conf.REINSTATE_VERSION].Name: conf.REINSTATE_VERSION,
 }
 
 var (
@@ -55,6 +58,12 @@ func ParseCommand(args []string) (*CredhubCommand, error) {
 		command.Payload, parseError = parseAddParameters(args[2:])
 	case conf.DEL_SECRET:
 		command.Payload, parseError = parseDeleteParameters(args[2:])
+	case conf.REINSTATE_VERSION:
+		command.Payload, parseError = parseReinstateParameters(args[2:])
+	default:
+		if len(args) > 2 {
+			parseError = BadCommandSyntaxError
+		}
 	}
 
 	return command, parseError
@@ -99,17 +108,29 @@ func parseDeleteParameters(args []string) (interface{}, error) {
 	return args, nil
 }
 
+func parseReinstateParameters(args []string) (interface{}, error) {
+	if len(args) != 1 {
+		// should get a single id to reinstate
+		return nil, BadCommandSyntaxError
+	}
+
+	return args[0], nil
+}
+
+func printKeys(keys []string) {
+	fmt.Println()
+	for _, key := range keys {
+		fmt.Println("  ", key)
+	}
+	fmt.Println()
+}
+
 func ListSecrets(brokerUrl, serviceGuid, token string) error {
 	keys := make([]string, 0)
 	if e := util.Request(brokerUrl, "api", serviceGuid, "keys").WithAuthorization(token).GetJson(&keys); e != nil {
 		return e
 	}
-
-	fmt.Println()
-	for _, key := range keys {
-		fmt.Println(key)
-	}
-	fmt.Println()
+	printKeys(keys)
 
 	return nil
 }
@@ -130,17 +151,39 @@ func DeleteSecrets(brokerUrl, serviceGuid, token string, payload interface{}) er
 	if e != nil {
 		return e
 	}
-	response := DeleteResponse{}
+	response := model.DeleteResponse{}
 	if e = util.Request(brokerUrl, "api", serviceGuid, "keys").WithAuthorization(token).Sending("application/json").WithContent(content).DeleteReturningJson(&response); e != nil {
 		return e
 	}
 
 	if response.IgnoredKeys != nil {
 		fmt.Println("Ignored keys (not existing):")
-		for _, key := range response.IgnoredKeys {
-			fmt.Println("  ", key)
-		}
-		fmt.Println()
+		printKeys(response.IgnoredKeys)
 	}
+	return nil
+}
+
+func ListVersions(brokerUrl, serviceGuid, token string) error {
+	versions := make([]model.SecretsVersionKeys, 0)
+	if e := util.Request(brokerUrl, "api", serviceGuid, "versions").WithAuthorization(token).GetJson(&versions); e != nil {
+		return e
+	}
+
+	fmt.Println()
+	for _, version := range versions {
+		fmt.Println("ID:", version.ID)
+		fmt.Println("Created:", version.VersionCreatedAt)
+		printKeys(version.Keys)
+	}
+	fmt.Println()
+
+	return nil
+}
+
+func ReinstateVersion(brokerUrl, serviceGuid, token string, payload interface{}) error {
+	if _, e := util.Request(brokerUrl, "api", serviceGuid, "version", payload.(string)).WithAuthorization(token).Put(); e != nil {
+		return e
+	}
+
 	return nil
 }
