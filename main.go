@@ -15,6 +15,7 @@ import (
 var (
 	OperationInProgressError = errors.New("operation in progress")
 	UnsupportedServiceError  = errors.New("service is not a credhub service instance")
+	BrokerUnsuportedError    = errors.New("the credhub service broker doesn't support secrets management")
 )
 
 type CredhubPlugin struct{}
@@ -105,11 +106,11 @@ func getBrokerUrl(cliConnection plugin.CliConnection, token string, service *plu
 	if e = util.Request(response["links"].(map[string]interface{})["service_offering"].(map[string]interface{})["href"].(string)).WithAuthorization(token).GetJson(&response); e != nil {
 		return "", e
 	}
-	if e = util.Request(response["links"].(map[string]interface{})["service_broker"].(map[string]interface{})["href"].(string)).WithAuthorization(token).GetJson(&response); e != nil {
-		return "", e
+	if secretsApi, found := response["broker_catalog"].(map[string]interface{})["metadata"].(map[string]interface{})["secretsApi"]; found {
+		return secretsApi.(string), nil
 	}
 
-	return response["url"].(string), nil
+	return "", BrokerUnsuportedError
 }
 
 func (c *CredhubPlugin) GetMetadata() plugin.PluginMetadata {
