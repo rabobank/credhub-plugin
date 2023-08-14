@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -124,6 +125,9 @@ func (r *HttpRequest) Do(method string) ([]byte, error) {
 	defer func() { _ = response.Body.Close() }()
 
 	if response.StatusCode < http.StatusOK || response.StatusCode >= http.StatusBadRequest {
+		body, e := io.ReadAll(response.Body)
+		fmt.Println(e)
+		fmt.Println(string(body))
 		return nil, errors.New("failed request")
 	}
 
