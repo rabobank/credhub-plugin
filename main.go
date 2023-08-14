@@ -48,17 +48,23 @@ func (c *CredhubPlugin) Run(cliConnection plugin.CliConnection, args []string) {
 		os.Exit(1)
 	}
 
+	ignoreSsl, e := cliConnection.IsSSLDisabled()
+	if e != nil {
+		fmt.Println("Unable to infer if ssl is disabled... enabling it by default")
+		ignoreSsl = false
+	}
+
 	switch command.Command {
 	case conf.LIST_SECRETS:
-		e = commands.ListSecrets(brokerUrl, service.Guid, token)
+		e = commands.ListSecrets(brokerUrl, service.Guid, token, ignoreSsl)
 	case conf.ADD_SECRET:
-		e = commands.AddSecrets(brokerUrl, service.Guid, token, command.Payload)
+		e = commands.AddSecrets(brokerUrl, service.Guid, token, command.Payload, ignoreSsl)
 	case conf.DEL_SECRET:
-		e = commands.DeleteSecrets(brokerUrl, service.Guid, token, command.Payload)
+		e = commands.DeleteSecrets(brokerUrl, service.Guid, token, command.Payload, ignoreSsl)
 	case conf.LIST_VERSIONS:
-		e = commands.ListVersions(brokerUrl, service.Guid, token)
+		e = commands.ListVersions(brokerUrl, service.Guid, token, ignoreSsl)
 	case conf.REINSTATE_VERSION:
-		e = commands.ReinstateVersion(brokerUrl, service.Guid, token, command.Payload)
+		e = commands.ReinstateVersion(brokerUrl, service.Guid, token, command.Payload, ignoreSsl)
 	}
 
 	if e != nil {

@@ -125,9 +125,9 @@ func printKeys(keys []string) {
 	fmt.Println()
 }
 
-func ListSecrets(brokerUrl, serviceGuid, token string) error {
+func ListSecrets(brokerUrl, serviceGuid, token string, ignoreSsl bool) error {
 	keys := make([]string, 0)
-	if e := util.Request(brokerUrl, "api", serviceGuid, "keys").WithAuthorization(token).GetJson(&keys); e != nil {
+	if e := util.Request(brokerUrl, "api", serviceGuid, "keys").IgnoringSsl(ignoreSsl).WithAuthorization(token).GetJson(&keys); e != nil {
 		return e
 	}
 	printKeys(keys)
@@ -135,24 +135,24 @@ func ListSecrets(brokerUrl, serviceGuid, token string) error {
 	return nil
 }
 
-func AddSecrets(brokerUrl, serviceGuid, token string, payload interface{}) error {
+func AddSecrets(brokerUrl, serviceGuid, token string, payload interface{}, ignoreSsl bool) error {
 	content, e := json.Marshal(payload)
 	if e != nil {
 		return e
 	}
-	if _, e = util.Request(brokerUrl, "api", serviceGuid, "keys").WithAuthorization(token).Sending("application/json").WithContent(content).Put(); e != nil {
+	if _, e = util.Request(brokerUrl, "api", serviceGuid, "keys").IgnoringSsl(ignoreSsl).WithAuthorization(token).Sending("application/json").WithContent(content).Put(); e != nil {
 		return e
 	}
 	return nil
 }
 
-func DeleteSecrets(brokerUrl, serviceGuid, token string, payload interface{}) error {
+func DeleteSecrets(brokerUrl, serviceGuid, token string, payload interface{}, ignoreSsl bool) error {
 	content, e := json.Marshal(payload)
 	if e != nil {
 		return e
 	}
 	response := model.DeleteResponse{}
-	if e = util.Request(brokerUrl, "api", serviceGuid, "keys").WithAuthorization(token).Sending("application/json").WithContent(content).DeleteReturningJson(&response); e != nil {
+	if e = util.Request(brokerUrl, "api", serviceGuid, "keys").IgnoringSsl(ignoreSsl).WithAuthorization(token).Sending("application/json").WithContent(content).DeleteReturningJson(&response); e != nil {
 		return e
 	}
 
@@ -163,9 +163,9 @@ func DeleteSecrets(brokerUrl, serviceGuid, token string, payload interface{}) er
 	return nil
 }
 
-func ListVersions(brokerUrl, serviceGuid, token string) error {
+func ListVersions(brokerUrl, serviceGuid, token string, ignoreSsl bool) error {
 	versions := make([]model.SecretsVersionKeys, 0)
-	if e := util.Request(brokerUrl, "api", serviceGuid, "versions").WithAuthorization(token).GetJson(&versions); e != nil {
+	if e := util.Request(brokerUrl, "api", serviceGuid, "versions").IgnoringSsl(ignoreSsl).WithAuthorization(token).GetJson(&versions); e != nil {
 		return e
 	}
 
@@ -180,8 +180,8 @@ func ListVersions(brokerUrl, serviceGuid, token string) error {
 	return nil
 }
 
-func ReinstateVersion(brokerUrl, serviceGuid, token string, payload interface{}) error {
-	if _, e := util.Request(brokerUrl, "api", serviceGuid, "version", payload.(string)).WithAuthorization(token).Put(); e != nil {
+func ReinstateVersion(brokerUrl, serviceGuid, token string, payload interface{}, ignoreSsl bool) error {
+	if _, e := util.Request(brokerUrl, "api", serviceGuid, "version", payload.(string)).IgnoringSsl(ignoreSsl).WithAuthorization(token).Put(); e != nil {
 		return e
 	}
 

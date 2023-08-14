@@ -81,8 +81,8 @@ func (r *HttpRequest) WithHeader(key, value string) *HttpRequest {
 	return r
 }
 
-func (r *HttpRequest) IgnoringSsl() *HttpRequest {
-	r.transport().InsecureSkipVerify = true
+func (r *HttpRequest) IgnoringSsl(ignore bool) *HttpRequest {
+	r.transport().InsecureSkipVerify = ignore
 	return r
 }
 
