@@ -1,6 +1,10 @@
 package conf
 
 import (
+	"fmt"
+	"strconv"
+	"strings"
+
 	"code.cloudfoundry.org/cli/plugin"
 )
 
@@ -78,4 +82,53 @@ var COMMANDS = []plugin.Command{
 				"  VERSION_ID       - The credentials version id to reinstate. Can be obtained from the list-credhub-secrets-versions command.\n",
 		},
 	},
+}
+
+var (
+	VERSION  = "0.0.0"
+	COMMIT   = "dev"
+	Metadata plugin.PluginMetadata
+)
+
+func Initialize() {
+	versionParts := strings.Split(VERSION, ".")
+
+	if strings.HasPrefix(versionParts[0], "v") {
+		versionParts[0] = versionParts[0][1:]
+	}
+
+	if dashPosition := strings.Index(versionParts[2], "-"); dashPosition > 0 {
+		versionParts[2] = versionParts[2][:dashPosition]
+	}
+
+	major, e := strconv.Atoi(versionParts[0])
+	if e != nil {
+		fmt.Printf("invalid major version : %s. Defaulting to 0\n", versionParts[0])
+		major = 0
+	}
+	minor, e := strconv.Atoi(versionParts[1])
+	if e != nil {
+		fmt.Printf("invalid minor version : %s. Defaulting to 0\n", versionParts[1])
+		minor = 0
+	}
+	build, e := strconv.Atoi(versionParts[2])
+	if e != nil {
+		fmt.Printf("invalid build version : %s. Defaulting to 0\n", versionParts[2])
+		build = 0
+	}
+
+	Metadata = plugin.PluginMetadata{
+		Name: "credhub-plugin",
+		Version: plugin.VersionType{
+			Major: major,
+			Minor: minor,
+			Build: build,
+		},
+		MinCliVersion: plugin.VersionType{
+			Major: 7,
+			Minor: 1,
+			Build: 0,
+		},
+		Commands: COMMANDS,
+	}
 }

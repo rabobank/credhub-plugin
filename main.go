@@ -107,24 +107,13 @@ func getBrokerUrl(cliConnection plugin.CliConnection, token string, service *plu
 }
 
 func (c *CredhubPlugin) GetMetadata() plugin.PluginMetadata {
-	return plugin.PluginMetadata{
-		Name: "credhub-plugin",
-		Version: plugin.VersionType{
-			Major: 1,
-			Minor: 0,
-			Build: 0,
-		},
-		MinCliVersion: plugin.VersionType{
-			Major: 7,
-			Minor: 1,
-			Build: 0,
-		},
-		Commands: conf.COMMANDS,
-	}
+	return conf.Metadata
 }
 
 func main() {
+	conf.Initialize()
 	if len(os.Args) == 1 {
+		fmt.Printf("credhub-plugin, version:%s, commit:%s\n", conf.VERSION, conf.COMMIT)
 		_, _ = fmt.Fprintf(os.Stderr, "This executable is a cf plugin.\n"+
 			"Run `cf install-plugin %s` to install it",
 			os.Args[0])
