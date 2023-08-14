@@ -92,29 +92,36 @@ var (
 
 func Initialize() {
 	versionParts := strings.Split(VERSION, ".")
+	var major, minor, build int
+	var e error
 
 	if strings.HasPrefix(versionParts[0], "v") {
 		versionParts[0] = versionParts[0][1:]
 	}
 
-	if dashPosition := strings.Index(versionParts[2], "-"); dashPosition > 0 {
-		versionParts[2] = versionParts[2][:dashPosition]
-	}
-
-	major, e := strconv.Atoi(versionParts[0])
+	major, e = strconv.Atoi(versionParts[0])
 	if e != nil {
 		fmt.Printf("invalid major version : %s. Defaulting to 0\n", versionParts[0])
 		major = 0
 	}
-	minor, e := strconv.Atoi(versionParts[1])
-	if e != nil {
-		fmt.Printf("invalid minor version : %s. Defaulting to 0\n", versionParts[1])
-		minor = 0
+
+	if len(versionParts) > 1 {
+		minor, e = strconv.Atoi(versionParts[1])
+		if e != nil {
+			fmt.Printf("invalid minor version : %s. Defaulting to 0\n", versionParts[1])
+			minor = 0
+		}
 	}
-	build, e := strconv.Atoi(versionParts[2])
-	if e != nil {
-		fmt.Printf("invalid build version : %s. Defaulting to 0\n", versionParts[2])
-		build = 0
+
+	if len(versionParts) > 2 {
+		if dashPosition := strings.Index(versionParts[2], "-"); dashPosition > 0 {
+			versionParts[2] = versionParts[2][:dashPosition]
+		}
+		build, e = strconv.Atoi(versionParts[2])
+		if e != nil {
+			fmt.Printf("invalid build version : %s. Defaulting to 0\n", versionParts[2])
+			build = 0
+		}
 	}
 
 	Metadata = plugin.PluginMetadata{
