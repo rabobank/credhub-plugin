@@ -28,7 +28,7 @@ jobs:
           COMMIT: ${{ github.sha }}
         run: .github/scripts/build.sh
       - name: upload credhub-plugin
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist/
@@ -47,7 +47,7 @@ jobs:
         run: |
           echo VERSION=$(~/go/bin/versioning bump_patch) >> ${GITHUB_ENV}
       - name: Download Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
