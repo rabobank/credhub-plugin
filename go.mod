@@ -4,7 +4,7 @@ go 1.23
 
 replace (
 	github.com/envoyproxy/protoc-gen-validate => github.com/envoyproxy/protoc-gen-validate v1.2.1
-	github.com/golang/. => github.com/golang/glog v1.2.4
+	github.com/golang => github.com/golang/glog v1.2.4
 	github.com/pkg/sftp => github.com/pkg/sftp v1.13.7
 	github.com/stretchr/testify => github.com/stretchr/testify v1.10.0
 	github.com/yuin/goldmark => github.com/yuin/goldmark v1.7.8
@@ -49,7 +49,7 @@ require (
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/pty v1.1.8 // indirect
 	github.com/lunixbochs/vtclean v1.0.0 // indirect
-	github.com/mattn/go-colorable v0.1.14 // indirect..
+	github.com/mattn/go-colorable v0.1.14 // indirect; indirect..
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/moby/moby v20.10.11+incompatible // indirect
@@ -62,7 +62,6 @@ require (
 	github.com/tedsuo/rata v1.0.0 // indirect
 	github.com/vito/go-interact v1.0.0 // indirect
 	golang.org/x/crypto v0.32.0 // indirect
-	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/term v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
