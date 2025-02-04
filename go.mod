@@ -4,7 +4,7 @@ go 1.23
 
 replace (
 	github.com/envoyproxy/protoc-gen-validate => github.com/envoyproxy/protoc-gen-validate v1.2.1
-	github.com/golang => github.com/golang/glog v1.2.4
+	github.com/golang/glog => github.com/golang/glog v1.2.4
 	github.com/pkg/sftp => github.com/pkg/sftp v1.13.7
 	github.com/stretchr/testify => github.com/stretchr/testify v1.10.0
 	github.com/yuin/goldmark => github.com/yuin/goldmark v1.7.8
