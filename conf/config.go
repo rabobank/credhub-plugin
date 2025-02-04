@@ -125,17 +125,9 @@ func Initialize() {
 	}
 
 	Metadata = plugin.PluginMetadata{
-		Name: "credhub-plugin",
-		Version: plugin.VersionType{
-			Major: major,
-			Minor: minor,
-			Build: build,
-		},
-		MinCliVersion: plugin.VersionType{
-			Major: 7,
-			Minor: 1,
-			Build: 0,
-		},
-		Commands: COMMANDS,
+		Name:          "credhub-plugin",
+		Version:       plugin.VersionType{Major: major, Minor: minor, Build: build},
+		MinCliVersion: plugin.VersionType{Major: 7, Minor: 1, Build: 0},
+		Commands:      COMMANDS,
 	}
 }
