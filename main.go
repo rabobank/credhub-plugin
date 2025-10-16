@@ -7,6 +7,7 @@ import (
 	"code.cloudfoundry.org/cli/cf/errors"
 	"code.cloudfoundry.org/cli/plugin"
 	plugin_models "code.cloudfoundry.org/cli/plugin/models"
+	"github.com/rabobank/cf-plugins"
 	"github.com/rabobank/credhub-plugin/commands"
 	"github.com/rabobank/credhub-plugin/conf"
 	"github.com/rabobank/credhub-plugin/util"
@@ -127,5 +128,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	plugin.Start(new(CredhubPlugin))
+	plugins.Start(new(CredhubPlugin))
 }
