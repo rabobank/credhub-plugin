@@ -4,11 +4,10 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
-
-	"code.cloudfoundry.org/cli/cf/errors"
 )
 
 var (

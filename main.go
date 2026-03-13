@@ -1,12 +1,12 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
-	"code.cloudfoundry.org/cli/cf/errors"
-	"code.cloudfoundry.org/cli/plugin"
-	plugin_models "code.cloudfoundry.org/cli/plugin/models"
+	"code.cloudfoundry.org/cli/v8/plugin"
+	plugin_models "code.cloudfoundry.org/cli/v8/plugin/models"
 	"github.com/rabobank/cf-plugins"
 	"github.com/rabobank/credhub-plugin/commands"
 	"github.com/rabobank/credhub-plugin/conf"
@@ -16,7 +16,7 @@ import (
 var (
 	OperationInProgressError = errors.New("operation in progress")
 	UnsupportedServiceError  = errors.New("service is not a credhub service instance")
-	BrokerUnsuportedError    = errors.New("the credhub service broker doesn't support secrets management")
+	BrokerUnsupportedError   = errors.New("the credhub service broker doesn't support secrets management")
 )
 
 type CredhubPlugin struct{}
@@ -111,7 +111,7 @@ func getBrokerUrl(cliConnection plugin.CliConnection, token string, service *plu
 		return secretsApi.(string), nil
 	}
 
-	return "", BrokerUnsuportedError
+	return "", BrokerUnsupportedError
 }
 
 func (c *CredhubPlugin) GetMetadata() plugin.PluginMetadata {

@@ -2,10 +2,10 @@ package commands
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 
-	"code.cloudfoundry.org/cli/cf/errors"
 	"github.com/rabobank/credhub-plugin/conf"
 	"github.com/rabobank/credhub-plugin/util"
 	"github.com/rabobank/credhub-service-broker/model"
