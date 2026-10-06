@@ -5,7 +5,7 @@ go 1.26.7
 require (
 	code.cloudfoundry.org/cli/v8 v8.19.0
 	github.com/rabobank/cf-plugins v1.0.0
-	github.com/rabobank/credhub-service-broker v1.0.27
+	github.com/rabobank/credhub-service-broker v1.0.29
 )
 
 require (
