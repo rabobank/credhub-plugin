@@ -1,11 +1,13 @@
 module github.com/rabobank/credhub-plugin
 
-go 1.26.7
+go 1.26.9
+
+replace golang.org/x/net => golang.org/x/net v0.61.0
 
 require (
-	code.cloudfoundry.org/cli/v8 v8.19.0
+	code.cloudfoundry.org/cli/v8 v8.19.1
 	github.com/rabobank/cf-plugins v1.0.0
-	github.com/rabobank/credhub-service-broker v1.0.32
+	github.com/rabobank/credhub-service-broker v1.0.33
 )
 
 require (
@@ -13,7 +15,6 @@ require (
 	github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0 // indirect
 	github.com/go-martini/martini v0.0.0-20170121215854-22fa46961aab // indirect
 	github.com/martini-contrib/render v0.0.0-20150707142108-ec18f8345a11 // indirect
-	github.com/onsi/gomega v1.44.0 // indirect
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c // indirect
 	github.com/stretchr/testify v1.12.1 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
